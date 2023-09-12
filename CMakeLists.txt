@@ -11,12 +11,11 @@ endif()
 
 project ("EyeSew")
 
-set (OPENGL_VERSION 4.3)
-
 # Include sub-projects.
 add_subdirectory ("EyeSew")
 add_subdirectory ("luau")
 add_subdirectory ("raylib")
+add_subdirectory ("zep")
 
 include_directories ("luau/CodeGen/include")
 include_directories ("luau/VM/include")

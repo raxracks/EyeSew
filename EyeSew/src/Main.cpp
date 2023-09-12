@@ -12,7 +12,7 @@ int main()
     SetExitKey(KEY_NULL);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(800, 600, "iso");
-    SetTargetFPS(60);
+    // SetTargetFPS(60);
     MaximizeWindow();
     rlImGuiSetup(true);
 
@@ -20,12 +20,12 @@ int main()
     RenderTexture viewport = LoadRenderTexture(600, 400);
     Editor editor(game, viewport);
 
+    for (int i = 0; i < 10000; i++)
+        new Instance("Part", game.workspace);
+
     bool editing = true;
 
-    std::vector<Instance*> descedants = game.workspace->GetDescendants();
-    std::vector<Instance*> parts;
-
-    std::thread([&]() {
+    /*std::thread([&]() {
         std::vector<Instance*> p;
 
         while (true) {
@@ -37,7 +37,7 @@ int main()
             parts = p;
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
-    }).detach();
+    }).detach();*/
 
     while (!WindowShouldClose()) {
         if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_E)) {
@@ -54,9 +54,9 @@ int main()
             BeginMode3D(game.camera->Camera);
             {
                 DrawGrid(100, 1);
-                for (Instance* child : parts) {
-
-                    DrawCube(child->Position, child->Size.X, child->Size.Y, child->Size.Z, child->Color);
+                for (Instance* child : game.workspace->GetDescendants()) {
+                    if (child->IsA("Part"))
+                        DrawCube(child->Position, child->Size.X, child->Size.Y, child->Size.Z, child->Color);
                 }
             }
             EndMode3D();

@@ -2,6 +2,7 @@
 // #include "rlImGui/extras/FA6FreeSolidFontData.h"
 #include <imgui_stdlib.h>
 #include <rlImGui.h>
+#include <zep.h>
 
 Editor::Editor(Game& game, RenderTexture& renderTexture)
     : m_Game(game)
@@ -11,7 +12,7 @@ Editor::Editor(Game& game, RenderTexture& renderTexture)
     , m_ShowMetrics(false)
 {
     ImGuiIO& io = ImGui::GetIO();
-    // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
     ImFontConfig icons_config;
     icons_config.MergeMode = true;
@@ -36,7 +37,7 @@ void Editor::Update()
 void Editor::DrawUI()
 {
     // ImGui::PushFont(m_MainFont);
-    //  ImGui::DockSpaceOverViewport();
+    ImGui::DockSpaceOverViewport();
     ShowViewport();
     ShowMetrics();
     ShowProperties();

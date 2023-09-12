@@ -24,6 +24,7 @@ endif()
 
 target_link_libraries (${PROJECT_NAME} Luau.Compiler Luau.VM Luau.CodeGen)
 target_link_libraries (${PROJECT_NAME} raylib)
+target_link_libraries (${PROJECT_NAME} Zep)
 
 target_include_directories (${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/imgui)
 target_include_directories (${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/imgui/misc/cpp)
