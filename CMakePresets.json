@@ -2,28 +2,23 @@
   "version": 3,
   "configurePresets": [
     {
-      "name": "windows-base",
+      "name": "base",
       "hidden": true,
-      "generator": "Visual Studio 17 2022",
+      "generator": "MinGW Makefiles",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
       "cacheVariables": {
-        "CMAKE_C_COMPILER": "cl.exe",
-        "CMAKE_CXX_COMPILER": "cl.exe",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
         "OPENGL_VERSION": "4.3",
         "LUAU_BUILD_TESTS": "OFF",
         "LUAU_BUILD_CLI": "OFF"
-      },
-      "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
       }
     },
     {
       "name": "x64-debug",
       "displayName": "x64 Debug",
-      "inherits": "windows-base",
+      "inherits": "base",
       "architecture": {
         "value": "x64",
         "strategy": "external"
@@ -43,7 +38,7 @@
     {
       "name": "x86-debug",
       "displayName": "x86 Debug",
-      "inherits": "windows-base",
+      "inherits": "base",
       "architecture": {
         "value": "x86",
         "strategy": "external"
