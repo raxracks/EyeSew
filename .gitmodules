@@ -14,7 +14,3 @@
 	path = rlImGui
 	url = https://github.com/raylib-extras/rlImGui
 	shallow = true
-[submodule "zep"]
-	path = zep
-	url = https://github.com/Rezonality/zep
-	shallow = true
