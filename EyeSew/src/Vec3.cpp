@@ -31,7 +31,7 @@ void Vec3::Lua(lua_State *L, Vec3 *vec3) {
 }
 
 int Vec3::__index(lua_State *L) {
-  Vec3 *self = *(Vec3 **)lua_touserdata(L, 1);
+  Vec3 *self = GetSelf<Vec3>(L);
   std::string key = lua_tostring(L, 2);
   if (key == "X")
     lua_pushnumber(L, self->X);
@@ -40,14 +40,13 @@ int Vec3::__index(lua_State *L) {
   else if (key == "Z")
     lua_pushnumber(L, self->Z);
   else
-    luaL_error(L, "Cannot read property \"%s\" on Vector3: does not exist!",
-               key.c_str());
+    lua_pushnil(L);
 
   return 1;
 }
 
 int Vec3::__newindex(lua_State *L) {
-  Vec3 *self = *(Vec3 **)lua_touserdata(L, 1);
+  Vec3 *self = GetSelf<Vec3>(L);
   std::string key = lua_tostring(L, 2);
   if (key == "X")
     self->X = lua_tonumber(L, 3);

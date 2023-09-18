@@ -2,11 +2,11 @@
 
 Instance::Instance(const std::string className)
     : Camera(Cam(Position, Distance)), ClassName(className), Name(className),
-      Properties(CalculateProperties()) {}
+      Properties(FetchProperties()) {}
 
 Instance::Instance(const std::string className, Instance *parent)
     : Camera(Cam(Position, Distance)), ClassName(className), Name(className),
-      Properties(CalculateProperties()) {
+      Properties(FetchProperties()) {
   SetParent(parent);
 }
 
@@ -88,16 +88,16 @@ void Instance::AddDescendants(Instance *root) {
   }
 }
 
-const uint32_t Instance::CalculateProperties() {
-  if (IsA("Part")) {
-    return Properties::Position | Properties::Size | Properties::Color;
-  } else if (IsA("Script")) {
-    return Properties::Code;
-  } else if (IsA("Camera")) {
-    return Properties::Position | Properties::Distance;
-  }
+const std::map<const std::string, const uint32_t> Instance::Classes = {
+    {"Part", Properties::Position | Properties::Size | Properties::Color},
+    {"Script", Properties::Code},
+    {"Camera", Properties::Position | Properties::Distance}};
 
-  return 0;
+const uint32_t Instance::FetchProperties() {
+  if (Classes.contains(ClassName))
+    return Classes.at(ClassName);
+  else
+    return 0;
 }
 
 void Instance::Metatable(lua_State *L) {
@@ -123,6 +123,8 @@ int Instance::__index(lua_State *L) {
   std::string key = lua_tostring(L, 2);
   if (key == "Name")
     lua_pushstring(L, self->Name.c_str());
+  else if (key == "ClassName")
+    lua_pushstring(L, self->ClassName.c_str());
   else if (key == "Parent")
     Instance::Lua(L, self->Parent);
   else if (key == "GetChildren")
@@ -133,7 +135,7 @@ int Instance::__index(lua_State *L) {
     });
   else if (key == "GetDescendants")
     pushfunction(L, [](lua_State *L) {
-      VectorToTable<Instance>(L, GetSelf<Instance>(L)->GetChildren());
+      VectorToTable<Instance>(L, GetSelf<Instance>(L)->GetDescendants());
 
       return 1;
     });
@@ -176,6 +178,11 @@ int Instance::__newindex(lua_State *L) {
     self->Color = **(Color3 **)lua_touserdata(L, 3);
   else if (key == "Position")
     self->Position = **(Vec3 **)lua_touserdata(L, 3);
+  else if (key == "Distance")
+    self->Distance = lua_tonumber(L, 3);
+  else
+    luaL_error(L, "Cannot write property \"%s\" on Instance: does not exist!",
+               key.c_str());
 
   return 0;
 }

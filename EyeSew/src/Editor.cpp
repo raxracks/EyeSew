@@ -11,13 +11,14 @@ Editor::Editor(Game &game, RenderTexture &renderTexture)
   icons_config.PixelSnapH = true;
   icons_config.FontDataOwnedByAtlas = false;
   icons_config.GlyphRanges = icons_ranges;
-  // m_FiraFont =
-  // io.Fonts->AddFontFromFileTTF("assets/FiraCode/FiraCode-Regular.ttf", 20.0f);
-  // m_MainFont =
-  // io.Fonts->AddFontFromFileTTF("assets/Roboto/Roboto-Regular.ttf", 18.0f);
-  /*io.Fonts->AddFontFromMemoryCompressedTTF((void*)fa_solid_900_compressed_data,
-  fa_solid_900_compressed_size, FONT_AWESOME_ICON_SIZE, &icons_config,
-  icons_ranges); rlImGuiReloadFonts();*/
+  m_FiraFont = io.Fonts->AddFontFromFileTTF(
+      "assets/FiraCode/FiraCode-Regular.ttf", 20.0f);
+  m_MainFont =
+      io.Fonts->AddFontFromFileTTF("assets/Roboto/Roboto-Regular.ttf", 18.0f);
+  io.Fonts->AddFontFromMemoryCompressedTTF(
+      (void *)fa_solid_900_compressed_data, fa_solid_900_compressed_size,
+      FONT_AWESOME_ICON_SIZE, &icons_config, icons_ranges);
+  rlImGuiReloadFonts();
 
   // m_TextEditor.SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
 }
@@ -29,17 +30,15 @@ void Editor::Update() {
 }
 
 void Editor::DrawUI() {
-  // ImGui::PushFont(m_MainFont);
+  ImGui::PushFont(m_MainFont);
   ImGui::DockSpaceOverViewport();
   ShowViewport();
   ShowMetrics();
   ShowProperties();
   ShowPlayMenu();
   ShowInspector();
-  // ImGui::PopFont();
+  ImGui::PopFont();
 }
-
-std::vector<std::string> types = {"Part", "Script"};
 
 void Editor::ShowInspector() {
   ImGui::Begin("Inspector");
@@ -51,9 +50,9 @@ void Editor::ShowInspector() {
       }
 
       if (ImGui::BeginPopup("popup_new")) {
-        for (std::string type : types) {
-          if (ImGui::Button(type.c_str())) {
-            Instance *instance = new Instance(type, m_SelectedChild);
+        for (std::pair<std::string, uint32_t> IClass : Instance::Classes) {
+          if (ImGui::Button(IClass.first.c_str())) {
+            Instance *instance = new Instance(IClass.first, m_SelectedChild);
             ImGui::CloseCurrentPopup();
           }
         }

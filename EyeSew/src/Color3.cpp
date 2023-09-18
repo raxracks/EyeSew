@@ -40,7 +40,7 @@ void Color3::Lua(lua_State *L, Color3 *color3) {
 }
 
 int Color3::__index(lua_State *L) {
-  Color3 *self = *(Color3 **)lua_touserdata(L, 1);
+  Color3 *self = GetSelf<Color3>(L);
   std::string key = lua_tostring(L, 2);
   if (key == "R")
     lua_pushnumber(L, self->R);
@@ -51,14 +51,13 @@ int Color3::__index(lua_State *L) {
   else if (key == "A")
     lua_pushnumber(L, self->A);
   else
-    luaL_error(L, "Cannot read property \"%s\" on Color3: does not exist!",
-               key.c_str());
+    lua_pushnil(L);
 
   return 1;
 }
 
 int Color3::__newindex(lua_State *L) {
-  Color3 *self = *(Color3 **)lua_touserdata(L, 1);
+  Color3 *self = GetSelf<Color3>(L);
   std::string key = lua_tostring(L, 2);
   if (key == "R")
     self->R = lua_tonumber(L, 3);

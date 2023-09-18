@@ -3,14 +3,16 @@
 #include "Instance.hpp"
 #include "Script.hpp"
 #include <imgui.h>
-#include <raylib.h>
+#include <raylib-cpp.hpp>
+#include <raymath.h>
 #include <rlImGui.h>
 #include <vector>
 
 int main() {
   SetExitKey(KEY_NULL);
   SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-  InitWindow(800, 600, "iso");
+  InitWindow(800, 600, "EyeSew");
+  SetWindowIcon(LoadImage("assets/icon.png"));
   SetTargetFPS(60);
   MaximizeWindow();
   rlImGuiSetup(true);
@@ -19,11 +21,12 @@ int main() {
   RenderTexture viewport = LoadRenderTexture(600, 400);
   Editor editor(game, viewport);
 
-  new Instance("Part", game.workspace);
+  // new Instance("Part", game.workspace);
+
   Instance *script = new Instance("Script", game.workspace);
   script->Code = R"(
-    for i, v in workspace:GetChildren() do
-      print(i, v.Name, v:IsA("Part"))
+    for _, child in workspace:GetDescendants() do
+      print(child.Name, child.ClassName)
     end
   )";
 
@@ -72,8 +75,10 @@ int main() {
 
     if (editing)
       EndTextureMode();
-    else
+    else {
+      DrawFPS(10, 10);
       EndDrawing();
+    }
 
     if (editing) {
       BeginDrawing();

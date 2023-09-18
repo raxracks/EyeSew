@@ -16,6 +16,8 @@ add_executable (EyeSew
 
 target_include_directories (${PROJECT_NAME} PRIVATE "include")
 
+file(COPY assets DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET EyeSew PROPERTY CXX_STANDARD 20)
 endif()
@@ -24,6 +26,7 @@ endif()
 
 target_link_libraries (${PROJECT_NAME} Luau.Compiler Luau.VM Luau.CodeGen)
 target_link_libraries (${PROJECT_NAME} raylib)
+target_link_libraries (${PROJECT_NAME} raylib_cpp)
 
 target_include_directories (${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/imgui)
 target_include_directories (${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/imgui/misc/cpp)

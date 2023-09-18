@@ -17,4 +17,5 @@ public:
 
 private:
   std::thread m_Thread;
+  lua_State *L;
 };

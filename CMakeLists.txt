@@ -17,6 +17,7 @@ project ("EyeSew")
 add_subdirectory ("EyeSew")
 add_subdirectory ("luau")
 add_subdirectory ("raylib")
+add_subdirectory ("raylib-cpp")
 
 include_directories ("luau/CodeGen/include")
 include_directories ("luau/VM/include")

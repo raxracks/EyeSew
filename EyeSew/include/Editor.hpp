@@ -1,8 +1,8 @@
 #pragma once
 #include "Game.hpp"
 // #include "ImGuiColorTextEdit/TextEditor.h"
-// #include "rlImGui/extras/FA6FreeSolidFontData.h"
 #include "Instance.hpp"
+#include "extras/FA6FreeSolidFontData.h"
 #include <imgui.h>
 #include <imgui_stdlib.h>
 #include <raylib.h>
@@ -14,6 +14,7 @@ public:
 
   void Update();
   void DrawUI();
+  void ShowMetrics();
 
   Instance *m_SelectedChild;
 
@@ -29,7 +30,6 @@ private:
 
   void ShowInspector();
   void ShowViewport();
-  void ShowMetrics();
   void ShowProperties();
   void ShowPlayMenu();
 

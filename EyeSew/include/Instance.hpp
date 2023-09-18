@@ -5,6 +5,7 @@
 #include "Vec3.hpp"
 #include <iostream>
 #include <lua.h>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -33,9 +34,10 @@ public:
   Vec3 Position;
   Vec3 Size = Vec3(1, 1, 1);
   Color3 Color;
-  Cam Camera;
   float Distance = 10.0f;
   std::string Code;
+
+  Cam Camera;
 
   static void Metatable(lua_State *L);
   static void Lua(lua_State *L, Instance *instance);
@@ -47,8 +49,10 @@ public:
   Instance *prev = nullptr;
   bool destroyed = false;
 
+  static const std::map<const std::string, const uint32_t> Classes;
+
 private:
-  const uint32_t CalculateProperties();
+  const uint32_t FetchProperties();
   void AddDescendants(Instance *root);
 
   std::vector<Instance *> children;
