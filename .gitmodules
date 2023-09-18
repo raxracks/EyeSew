@@ -14,3 +14,6 @@
 	path = rlImGui
 	url = https://github.com/raylib-extras/rlImGui
 	shallow = true
+[submodule "raylib-cpp"]
+	path = raylib-cpp
+	url = https://github.com/RobLoach/raylib-cpp
